@@ -328,6 +328,99 @@
       color: #e74c3c;
       border: 1px solid rgba(231, 76, 60, 0.3);
     }
+
+    /* Arena Tabs */
+    .arena-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    .arena-tab {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      background: var(--stat-bg);
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .arena-tab:hover {
+      background: var(--kbd-bg);
+    }
+    .arena-tab.active {
+      background: linear-gradient(135deg, #6d5efc, #3bc2ff);
+      color: #071022;
+      border-color: transparent;
+    }
+    .arena-content {
+      display: none;
+      height: calc(100% - 58px);
+      position: relative;
+    }
+    .arena-content.active {
+      display: block;
+    }
+
+    /* AI Recognition */
+    .ai-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 16px;
+      text-align: center;
+    }
+    .ai-webcam-wrap {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 16px;
+    }
+    .ai-webcam-wrap canvas {
+      display: block;
+      max-width: 100%;
+      border-radius: 14px;
+    }
+    .ai-result {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      min-height: 40px;
+    }
+    .ai-confidence {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .ai-status {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .ai-btn {
+      padding: 12px 24px;
+      min-width: 140px;
+    }
+    .confidence-bar {
+      width: 200px;
+      height: 8px;
+      background: var(--stat-bg);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 8px auto;
+    }
+    .confidence-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #6d5efc, #3bc2ff);
+      border-radius: 4px;
+      transition: width 0.2s ease;
+    }
   </style>
 </head>
 <body>
@@ -421,14 +514,42 @@
     </div>
 
     <div class="arena" id="arena">
-      <div class="arenaHeader">
-        <div class="tag">🎯 뜨면 바로 눌러!</div>
-        <div class="tag">⏱️ 30초 스피드런</div>
+      <div class="arena-tabs">
+        <button class="arena-tab active" data-tab="game">🎮 게임</button>
+        <button class="arena-tab" data-tab="ai">🤖 AI 인식</button>
       </div>
-      <div class="missFlash" id="missFlash"></div>
-      <div class="toast" id="toast"></div>
+
+      <!-- 게임 탭 -->
+      <div class="arena-content active" id="gameTab">
+        <div class="arenaHeader">
+          <div class="tag">🎯 뜨면 바로 눌러!</div>
+          <div class="tag">⏱️ 30초 스피드런</div>
+        </div>
+        <div class="missFlash" id="missFlash"></div>
+        <div class="toast" id="toast"></div>
+      </div>
+
+      <!-- AI 인식 탭 -->
+      <div class="arena-content" id="aiTab">
+        <div class="ai-container">
+          <div class="ai-status" id="aiStatus">카메라를 시작하세요</div>
+          <div class="ai-webcam-wrap" id="webcamWrap"></div>
+          <div class="ai-result" id="aiResult"></div>
+          <div class="ai-confidence" id="aiConfidence">
+            <div class="confidence-bar">
+              <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
+            </div>
+            <span id="confidenceText"></span>
+          </div>
+          <button class="ai-btn" id="aiBtn">카메라 시작</button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Teachable Machine Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
 <script>
   const arena = document.getElementById("arena");
@@ -473,7 +594,7 @@
     clearTimeout(targetTimeout);
     removeTarget();
 
-    const rect = arena.getBoundingClientRect();
+    const rect = document.getElementById("gameTab").getBoundingClientRect();
     const size = 64;
     const pad = 16 + 10; // header area safety
     const x = Math.random() * (rect.width - size - pad*2) + pad;
@@ -509,7 +630,7 @@
       scheduleSpawn();
     });
 
-    arena.appendChild(targetEl);
+    document.getElementById("gameTab").appendChild(targetEl);
 
     spawnAt = performance.now();
 
@@ -676,6 +797,131 @@
 
     submitBtn.disabled = false;
     submitBtn.textContent = "문의하기";
+  });
+
+  // Arena Tab Switching
+  const arenaTabs = document.querySelectorAll(".arena-tab");
+  const arenaContents = document.querySelectorAll(".arena-content");
+  const gameTab = document.getElementById("gameTab");
+
+  arenaTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const targetTab = tab.dataset.tab;
+
+      arenaTabs.forEach(t => t.classList.remove("active"));
+      arenaContents.forEach(c => c.classList.remove("active"));
+
+      tab.classList.add("active");
+      document.getElementById(targetTab + "Tab").classList.add("active");
+    });
+  });
+
+  // AI Recognition with Teachable Machine
+  const MODEL_URL = "https://teachablemachine.withgoogle.com/models/nhyWE-u6u/";
+
+  const aiStatus = document.getElementById("aiStatus");
+  const aiResult = document.getElementById("aiResult");
+  const aiBtn = document.getElementById("aiBtn");
+  const webcamWrap = document.getElementById("webcamWrap");
+  const confidenceFill = document.getElementById("confidenceFill");
+  const confidenceText = document.getElementById("confidenceText");
+
+  let model, webcam, maxPredictions;
+  let aiRunning = false;
+
+  async function initAI() {
+    aiBtn.disabled = true;
+    aiBtn.textContent = "로딩 중...";
+    aiStatus.textContent = "모델을 불러오는 중...";
+
+    try {
+      const modelURL = MODEL_URL + "model.json";
+      const metadataURL = MODEL_URL + "metadata.json";
+
+      model = await tmImage.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+
+      aiStatus.textContent = "카메라를 시작하는 중...";
+
+      const flip = true;
+      webcam = new tmImage.Webcam(224, 224, flip);
+      await webcam.setup();
+      await webcam.play();
+
+      webcamWrap.innerHTML = "";
+      webcamWrap.appendChild(webcam.canvas);
+
+      aiRunning = true;
+      aiBtn.textContent = "카메라 중지";
+      aiBtn.disabled = false;
+      aiStatus.textContent = "인식 중...";
+
+      window.requestAnimationFrame(loop);
+    } catch (error) {
+      console.error("AI 초기화 오류:", error);
+      aiStatus.textContent = "카메라 접근 오류. 권한을 확인하세요.";
+      aiBtn.textContent = "다시 시도";
+      aiBtn.disabled = false;
+    }
+  }
+
+  async function loop() {
+    if (!aiRunning) return;
+    webcam.update();
+    await predict();
+    window.requestAnimationFrame(loop);
+  }
+
+  async function predict() {
+    const predictions = await model.predict(webcam.canvas);
+
+    let topPrediction = predictions[0];
+    for (let i = 1; i < maxPredictions; i++) {
+      if (predictions[i].probability > topPrediction.probability) {
+        topPrediction = predictions[i];
+      }
+    }
+
+    const className = topPrediction.className;
+    const confidence = topPrediction.probability;
+    const confidencePercent = Math.round(confidence * 100);
+
+    // 귤이면 "귤님", 컵이면 "컵님"
+    if (confidence > 0.7) {
+      if (className === "귤") {
+        aiResult.textContent = "🍊 귤님!";
+      } else if (className === "컵") {
+        aiResult.textContent = "☕ 컵님!";
+      } else {
+        aiResult.textContent = `${className}님!`;
+      }
+    } else {
+      aiResult.textContent = "🤔 잘 모르겠어요...";
+    }
+
+    confidenceFill.style.width = confidencePercent + "%";
+    confidenceText.textContent = `신뢰도: ${confidencePercent}%`;
+  }
+
+  function stopAI() {
+    aiRunning = false;
+    if (webcam) {
+      webcam.stop();
+    }
+    webcamWrap.innerHTML = "";
+    aiResult.textContent = "";
+    confidenceFill.style.width = "0%";
+    confidenceText.textContent = "";
+    aiStatus.textContent = "카메라를 시작하세요";
+    aiBtn.textContent = "카메라 시작";
+  }
+
+  aiBtn.addEventListener("click", () => {
+    if (aiRunning) {
+      stopAI();
+    } else {
+      initAI();
+    }
   });
 </script>
 </body>

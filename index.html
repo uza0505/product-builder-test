@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>⚡ 1초 안에 잡아라! - 반응속도 게임</title>
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-7675012762476438">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7675012762476438"
+     crossorigin="anonymous"></script>
   <style>
     :root {
       /* Dark Mode (Default) */
@@ -50,13 +54,11 @@
     body{
       margin:0;
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;
       background: var(--bg-gradient);
       color: var(--text-color);
-      overflow:hidden;
+      overflow-x:hidden;
+      overflow-y:auto;
       transition: background 0.3s ease, color 0.3s ease;
     }
     .wrap{ width:min(980px, 92vw); display:grid; grid-template-columns: 360px 1fr; gap:16px; }
@@ -421,11 +423,50 @@
       border-radius: 4px;
       transition: width 0.2s ease;
     }
+
+    /* AdSense Styles */
+    .ad-container {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .ad-container ins {
+      display: block;
+    }
+    .ad-label {
+      font-size: 10px;
+      color: var(--text-hint);
+      margin-bottom: 4px;
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 10px 0;
+    }
   </style>
 </head>
 <body>
   <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
-  <div class="wrap">
+
+  <div class="main-container">
+    <!-- 상단 광고 -->
+    <div class="ad-container">
+      <div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-7675012762476438"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="wrap">
     <div class="panel">
       <h1>⚡ 1초 안에 잡아라!</h1>
       <p class="sub">
@@ -544,6 +585,19 @@
           <button class="ai-btn" id="aiBtn">카메라 시작</button>
         </div>
       </div>
+    </div>
+  </div>
+
+    <!-- 하단 광고 -->
+    <div class="ad-container">
+      <div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-7675012762476438"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
 

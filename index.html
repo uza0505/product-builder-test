@@ -3,7 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>⚡ 1초 안에 잡아라! - 반응속도 게임</title>
+  <title>1초 안에 잡아라! - 반응속도 테스트 게임 | AI 이미지 인식</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="30초 동안 반응속도를 테스트하는 무료 온라인 게임입니다. AI 이미지 인식 기능으로 귤과 컵을 구분해보세요. 집중력과 순발력을 키우는 교육용 게임.">
+  <meta name="keywords" content="반응속도 테스트, 반응속도 게임, 집중력 게임, AI 이미지 인식, Teachable Machine, 교육용 게임, 무료 게임">
+  <meta name="author" content="PyEdu">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="1초 안에 잡아라! - 반응속도 테스트 게임">
+  <meta property="og:description" content="30초 동안 반응속도를 테스트하고, AI로 물체를 인식해보세요!">
+  <meta property="og:locale" content="ko_KR">
+
   <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-7675012762476438">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7675012762476438"
@@ -424,21 +437,24 @@
       transition: width 0.2s ease;
     }
 
-    /* AdSense Styles */
+    /* AdSense Styles - 콘텐츠보다 눈에 띄지 않게 */
     .ad-container {
       width: 100%;
-      max-width: 980px;
+      max-width: 728px;
       margin: 0 auto;
-      padding: 10px 0;
+      padding: 8px 0;
       text-align: center;
+      opacity: 0.95;
     }
     .ad-container ins {
       display: block;
+      max-height: 90px;
     }
     .ad-label {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-hint);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      opacity: 0.7;
     }
     .main-container {
       display: flex;
@@ -448,12 +464,188 @@
       min-height: 100vh;
       padding: 10px 0;
     }
+
+    /* Header */
+    .site-header {
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--panel-border);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 20px;
+    }
+    .site-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .site-nav a:hover {
+      color: var(--text-color);
+    }
+    @media (max-width: 600px) {
+      .site-nav { gap: 12px; }
+      .site-nav a { font-size: 12px; }
+    }
+
+    /* Content Section */
+    .content-section {
+      width: min(980px, 92vw);
+      margin: 20px auto;
+      padding: 20px;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+    }
+    .content-section h2 {
+      font-size: 18px;
+      margin: 0 0 12px;
+    }
+    .content-section p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .feature-card {
+      padding: 16px;
+      background: var(--stat-bg);
+      border: 1px solid var(--stat-border);
+      border-radius: 14px;
+    }
+    .feature-card h3 {
+      font-size: 14px;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .feature-card p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Footer */
+    .site-footer {
+      width: 100%;
+      padding: 30px 20px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--panel-border);
+      margin-top: 20px;
+    }
+    .footer-inner {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 30px;
+      margin-bottom: 24px;
+    }
+    .footer-section h4 {
+      font-size: 14px;
+      margin: 0 0 12px;
+      color: var(--text-color);
+    }
+    .footer-section p,
+    .footer-section a {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin: 0;
+      text-decoration: none;
+    }
+    .footer-section a:hover {
+      color: var(--text-color);
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+    }
+    .footer-bottom {
+      padding-top: 20px;
+      border-top: 1px solid var(--panel-border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-hint);
+    }
+
+    /* Skip Link for Accessibility */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #6d5efc;
+      color: #fff;
+      padding: 8px 16px;
+      z-index: 1000;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Focus styles for accessibility */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid #6d5efc;
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
 
-  <div class="main-container">
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="site-logo" aria-label="PyEdu Games 홈">PyEdu Games</a>
+      <nav class="site-nav" role="navigation" aria-label="주요 메뉴">
+        <a href="#game">게임</a>
+        <a href="#ai">AI 인식</a>
+        <a href="#about">소개</a>
+        <a href="#contact">문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <button class="theme-toggle" id="themeToggle" title="테마 변경" aria-label="테마 변경">🌙</button>
+
+  <main class="main-container" id="main-content" role="main">
     <!-- 상단 광고 -->
     <div class="ad-container">
       <div class="ad-label">Advertisement</div>
@@ -466,7 +658,7 @@
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="wrap">
+    <div class="wrap" id="game">
     <div class="panel">
       <h1>⚡ 1초 안에 잡아라!</h1>
       <p class="sub">
@@ -588,6 +780,32 @@
     </div>
   </div>
 
+    <!-- 소개 섹션 -->
+    <section class="content-section" id="about">
+      <h2>사이트 소개</h2>
+      <p>PyEdu Games는 재미있고 교육적인 웹 게임과 AI 기술을 활용한 인터랙티브 콘텐츠를 제공합니다.
+      반응속도 테스트 게임으로 집중력과 순발력을 키우고, Google Teachable Machine을 활용한 AI 이미지 인식 기능을 체험해보세요.</p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <h3>🎯 반응속도 게임</h3>
+          <p>30초 동안 랜덤하게 나타나는 타깃을 클릭하세요. 빠르게 클릭할수록 높은 점수를 획득합니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>🤖 AI 이미지 인식</h3>
+          <p>웹캠을 통해 실시간으로 물체를 인식합니다. 귤과 컵을 구분하는 AI 모델을 직접 체험해보세요.</p>
+        </article>
+        <article class="feature-card">
+          <h3>📱 모바일 지원</h3>
+          <p>PC와 모바일 모두에서 최적화된 환경으로 게임을 즐길 수 있습니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>🌙 다크/라이트 모드</h3>
+          <p>눈의 피로를 줄이는 다크 모드와 밝은 환경에 적합한 라이트 모드를 지원합니다.</p>
+        </article>
+      </div>
+    </section>
+
     <!-- 하단 광고 -->
     <div class="ad-container">
       <div class="ad-label">Advertisement</div>
@@ -599,7 +817,44 @@
            data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-  </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4>PyEdu Games</h4>
+          <p>교육과 재미를 결합한 웹 기반 인터랙티브 콘텐츠를 제공합니다.</p>
+        </div>
+        <div class="footer-section">
+          <h4>바로가기</h4>
+          <div class="footer-links">
+            <a href="#game">반응속도 게임</a>
+            <a href="#ai">AI 이미지 인식</a>
+            <a href="#about">사이트 소개</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>문의</h4>
+          <div class="footer-links">
+            <a href="#contact" id="contact">제휴문의</a>
+            <p>비즈니스 제휴 및 협업 문의는<br>사이트 내 제휴문의 폼을 이용해주세요.</p>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>법적 고지</h4>
+          <div class="footer-links">
+            <a href="#privacy">개인정보처리방침</a>
+            <a href="#terms">이용약관</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PyEdu Games. All rights reserved. | Powered by Google Teachable Machine</p>
+      </div>
+    </div>
+  </footer>
 
   <!-- Teachable Machine Library -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>

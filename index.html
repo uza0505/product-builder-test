@@ -220,6 +220,114 @@
       margin-left:6px;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
+
+    /* Partnership Section */
+    .partnership-section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--panel-border);
+    }
+    .partnership-toggle {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      background: var(--stat-bg);
+      color: var(--text-color);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s ease;
+    }
+    .partnership-toggle:hover {
+      background: var(--kbd-bg);
+    }
+    .partnership-toggle .icon {
+      transition: transform 0.3s ease;
+    }
+    .partnership-toggle.active .icon {
+      transform: rotate(180deg);
+    }
+    .partnership-form {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .partnership-form.open {
+      max-height: 600px;
+      padding-top: 16px;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      background: var(--stat-bg);
+      color: var(--text-color);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #6d5efc;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-group select {
+      cursor: pointer;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .submit-btn {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .form-status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+    .form-status.success {
+      display: block;
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+    .form-status.error {
+      display: block;
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -260,6 +368,55 @@
         💡 팁: 타깃은 최대 <b>1초</b> 동안만 있어요. 늦으면 실패!<br>
         PC: 클릭 / 모바일: 터치<br>
         <span class="kbd">Space</span>로도 시작 가능
+      </div>
+
+      <!-- 제휴문의 섹션 -->
+      <div class="partnership-section">
+        <button class="partnership-toggle" id="partnershipToggle">
+          <span>🤝 제휴문의</span>
+          <span class="icon">▼</span>
+        </button>
+        <div class="partnership-form" id="partnershipForm">
+          <form id="contactForm" action="https://formspree.io/f/mkoowzyb" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="company">회사/단체명 *</label>
+                <input type="text" id="company" name="company" required placeholder="회사명 입력">
+              </div>
+              <div class="form-group">
+                <label for="name">담당자명 *</label>
+                <input type="text" id="name" name="name" required placeholder="이름 입력">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">이메일 *</label>
+                <input type="email" id="email" name="email" required placeholder="email@example.com">
+              </div>
+              <div class="form-group">
+                <label for="phone">연락처</label>
+                <input type="tel" id="phone" name="phone" placeholder="010-0000-0000">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="type">제휴 유형 *</label>
+              <select id="type" name="type" required>
+                <option value="">선택해주세요</option>
+                <option value="광고">광고 문의</option>
+                <option value="제휴">비즈니스 제휴</option>
+                <option value="협업">콘텐츠 협업</option>
+                <option value="교육">교육 기관 제휴</option>
+                <option value="기타">기타 문의</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">문의 내용 *</label>
+              <textarea id="message" name="message" required placeholder="제휴 관련 문의 내용을 입력해주세요."></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">문의하기</button>
+            <div class="form-status" id="formStatus"></div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -473,6 +630,53 @@
   setTheme(savedTheme);
 
   themeToggle.addEventListener("click", toggleTheme);
+
+  // Partnership Form Toggle & Submit
+  const partnershipToggle = document.getElementById("partnershipToggle");
+  const partnershipForm = document.getElementById("partnershipForm");
+  const contactForm = document.getElementById("contactForm");
+  const formStatus = document.getElementById("formStatus");
+  const submitBtn = document.getElementById("submitBtn");
+
+  partnershipToggle.addEventListener("click", () => {
+    partnershipToggle.classList.toggle("active");
+    partnershipForm.classList.toggle("open");
+  });
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "전송 중...";
+    formStatus.className = "form-status";
+    formStatus.style.display = "none";
+
+    const formData = new FormData(contactForm);
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        formStatus.textContent = "문의가 성공적으로 전송되었습니다! 빠른 시일 내에 답변드리겠습니다.";
+        formStatus.className = "form-status success";
+        contactForm.reset();
+      } else {
+        throw new Error("전송 실패");
+      }
+    } catch (error) {
+      formStatus.textContent = "전송에 실패했습니다. 잠시 후 다시 시도해주세요.";
+      formStatus.className = "form-status error";
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "문의하기";
+  });
 </script>
 </body>
 </html>

@@ -5,6 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>⚡ 1초 안에 잡아라! - 반응속도 게임</title>
   <style>
+    :root {
+      /* Dark Mode (Default) */
+      --bg-gradient: radial-gradient(1200px 800px at 20% 10%, #2a2f5a 0%, #0b0f19 55%, #070a12 100%);
+      --text-color: #e9efff;
+      --text-muted: rgba(233,239,255,0.72);
+      --text-dim: rgba(233,239,255,0.65);
+      --text-hint: rgba(233,239,255,0.62);
+      --panel-bg: rgba(255,255,255,0.06);
+      --panel-border: rgba(255,255,255,0.12);
+      --panel-shadow: rgba(0,0,0,0.35);
+      --stat-bg: rgba(0,0,0,0.24);
+      --stat-border: rgba(255,255,255,0.10);
+      --toast-bg: rgba(0,0,0,0.55);
+      --toast-border: rgba(255,255,255,0.14);
+      --kbd-bg: rgba(255,255,255,0.07);
+      --kbd-border: rgba(255,255,255,0.18);
+      --kbd-text: rgba(233,239,255,0.86);
+      --ghost-border: rgba(255,255,255,0.18);
+      --miss-flash: rgba(255, 60, 60, 0.12);
+    }
+
+    [data-theme="light"] {
+      --bg-gradient: radial-gradient(1200px 800px at 20% 10%, #e8eaf6 0%, #f5f5f5 55%, #ffffff 100%);
+      --text-color: #1a1a2e;
+      --text-muted: rgba(26,26,46,0.72);
+      --text-dim: rgba(26,26,46,0.65);
+      --text-hint: rgba(26,26,46,0.62);
+      --panel-bg: rgba(255,255,255,0.85);
+      --panel-border: rgba(0,0,0,0.12);
+      --panel-shadow: rgba(0,0,0,0.15);
+      --stat-bg: rgba(0,0,0,0.06);
+      --stat-border: rgba(0,0,0,0.10);
+      --toast-bg: rgba(255,255,255,0.92);
+      --toast-border: rgba(0,0,0,0.14);
+      --kbd-bg: rgba(0,0,0,0.07);
+      --kbd-border: rgba(0,0,0,0.18);
+      --kbd-text: rgba(26,26,46,0.86);
+      --ghost-border: rgba(0,0,0,0.18);
+      --miss-flash: rgba(255, 60, 60, 0.18);
+    }
+
     * { box-sizing: border-box; }
     body{
       margin:0;
@@ -13,31 +54,34 @@
       align-items:center;
       justify-content:center;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;
-      background: radial-gradient(1200px 800px at 20% 10%, #2a2f5a 0%, #0b0f19 55%, #070a12 100%);
-      color:#e9efff;
+      background: var(--bg-gradient);
+      color: var(--text-color);
       overflow:hidden;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     .wrap{ width:min(980px, 92vw); display:grid; grid-template-columns: 360px 1fr; gap:16px; }
     @media (max-width: 860px){ .wrap{ grid-template-columns: 1fr; } }
     .panel, .arena{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
       border-radius: 18px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+      box-shadow: 0 18px 50px var(--panel-shadow);
       backdrop-filter: blur(8px);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .panel{ padding:18px; }
     h1{ margin:0 0 10px; font-size:20px; letter-spacing:-0.3px; }
-    .sub{ margin:0 0 14px; color: rgba(233,239,255,0.72); line-height:1.45; font-size:13px; }
+    .sub{ margin:0 0 14px; color: var(--text-muted); line-height:1.45; font-size:13px; }
     .stats{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
     .stat{
       padding:12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.24);
+      border:1px solid var(--stat-border);
+      background: var(--stat-bg);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
-    .k{ font-size:12px; color: rgba(233,239,255,0.65); }
+    .k{ font-size:12px; color: var(--text-dim); }
     .v{ margin-top:6px; font-size:20px; font-weight:900; }
-    .v small{ font-size:12px; font-weight:700; color: rgba(233,239,255,0.65); }
+    .v small{ font-size:12px; font-weight:700; color: var(--text-dim); }
     .btns{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
     button{
       flex:1;
@@ -55,16 +99,42 @@
     button:active{ transform: translateY(0px); filter: brightness(0.98); }
     .ghost{
       background: transparent;
-      color:#e9efff;
-      border:1px solid rgba(255,255,255,0.18);
+      color: var(--text-color);
+      border:1px solid var(--ghost-border);
       box-shadow:none;
       flex: 0.8;
     }
     .hint{
       margin-top:12px;
       font-size:12px;
-      color: rgba(233,239,255,0.62);
+      color: var(--text-hint);
       line-height:1.5;
+    }
+    /* Theme Toggle Button */
+    .theme-toggle{
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--panel-border);
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px var(--panel-shadow);
+      transition: transform 0.2s ease, background 0.3s ease;
+      z-index: 100;
+    }
+    .theme-toggle:hover{
+      transform: scale(1.08);
+    }
+    .theme-toggle:active{
+      transform: scale(0.95);
     }
     .arena{
       position:relative;
@@ -76,14 +146,15 @@
       position:absolute; left:14px; top:12px; right:14px;
       display:flex; justify-content:space-between; align-items:center;
       pointer-events:none;
-      color: rgba(233,239,255,0.72);
+      color: var(--text-muted);
       font-weight:800;
       z-index:2;
     }
     .tag{ pointer-events:none; padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.20);
+      border:1px solid var(--panel-border);
+      background: var(--stat-bg);
       font-size:12px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     /* Target */
@@ -108,7 +179,7 @@
     @keyframes pop { to { transform: scale(1); } }
     .missFlash{
       position:absolute; inset:0;
-      background: rgba(255, 60, 60, 0.12);
+      background: var(--miss-flash);
       opacity:0;
       transition: opacity .2s ease;
       z-index:0;
@@ -121,13 +192,13 @@
       transform: translate(-50%, -50%);
       padding: 12px 14px;
       border-radius: 14px;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.14);
-      color:#e9efff;
+      background: var(--toast-bg);
+      border: 1px solid var(--toast-border);
+      color: var(--text-color);
       font-weight:900;
       letter-spacing:-0.2px;
       opacity:0;
-      transition: opacity .18s ease, transform .18s ease;
+      transition: opacity .18s ease, transform .18s ease, background 0.3s ease;
       z-index:3;
       pointer-events:none;
       text-align:center;
@@ -141,16 +212,18 @@
       display:inline-block;
       padding:2px 8px;
       border-radius:10px;
-      border:1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.07);
+      border:1px solid var(--kbd-border);
+      background: var(--kbd-bg);
       font-size:12px;
       font-weight:900;
-      color: rgba(233,239,255,0.86);
+      color: var(--kbd-text);
       margin-left:6px;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" title="테마 변경">🌙</button>
   <div class="wrap">
     <div class="panel">
       <h1>⚡ 1초 안에 잡아라!</h1>
@@ -378,6 +451,28 @@
 
   // 처음 안내
   showToast("버튼을 눌러 시작!");
+
+  // Theme Toggle
+  const THEME_KEY = "REACTION_THEME_V1";
+  const themeToggle = document.getElementById("themeToggle");
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    themeToggle.textContent = theme === "light" ? "☀️" : "🌙";
+    localStorage.setItem(THEME_KEY, theme);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "light" ? "dark" : "light";
+    setTheme(next);
+  }
+
+  // Initialize theme from localStorage or default to dark
+  const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+  setTheme(savedTheme);
+
+  themeToggle.addEventListener("click", toggleTheme);
 </script>
 </body>
 </html>

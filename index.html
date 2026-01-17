@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>1초 안에 잡아라! - 반응속도 테스트 게임 | AI 이미지 인식</title>
+  <title>1초 안에 잡아라! - 반응속도 테스트 게임</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="30초 동안 반응속도를 테스트하는 무료 온라인 게임입니다. AI 이미지 인식 기능으로 귤과 컵을 구분해보세요. 집중력과 순발력을 키우는 교육용 게임.">
-  <meta name="keywords" content="반응속도 테스트, 반응속도 게임, 집중력 게임, AI 이미지 인식, Teachable Machine, 교육용 게임, 무료 게임">
+  <meta name="description" content="30초 동안 반응속도를 테스트하는 무료 온라인 게임입니다. 집중력과 순발력을 키우는 교육용 게임.">
+  <meta name="keywords" content="반응속도 테스트, 반응속도 게임, 집중력 게임, 교육용 게임, 무료 게임">
   <meta name="author" content="PyEdu">
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="1초 안에 잡아라! - 반응속도 테스트 게임">
-  <meta property="og:description" content="30초 동안 반응속도를 테스트하고, AI로 물체를 인식해보세요!">
+  <meta property="og:description" content="30초 동안 반응속도를 테스트하세요! 집중력과 순발력을 키우는 교육용 게임.">
   <meta property="og:locale" content="ko_KR">
 
   <!-- Google AdSense -->
@@ -344,99 +344,6 @@
       border: 1px solid rgba(231, 76, 60, 0.3);
     }
 
-    /* Arena Tabs */
-    .arena-tabs {
-      display: flex;
-      gap: 8px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--panel-border);
-    }
-    .arena-tab {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid var(--panel-border);
-      border-radius: 10px;
-      background: var(--stat-bg);
-      color: var(--text-color);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .arena-tab:hover {
-      background: var(--kbd-bg);
-    }
-    .arena-tab.active {
-      background: linear-gradient(135deg, #6d5efc, #3bc2ff);
-      color: #071022;
-      border-color: transparent;
-    }
-    .arena-content {
-      display: none;
-      height: calc(100% - 58px);
-      position: relative;
-    }
-    .arena-content.active {
-      display: block;
-    }
-
-    /* AI Recognition */
-    .ai-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      padding: 16px;
-      text-align: center;
-    }
-    .ai-webcam-wrap {
-      position: relative;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #000;
-      margin-bottom: 16px;
-    }
-    .ai-webcam-wrap canvas {
-      display: block;
-      max-width: 100%;
-      border-radius: 14px;
-    }
-    .ai-result {
-      font-size: 28px;
-      font-weight: 900;
-      margin-bottom: 12px;
-      min-height: 40px;
-    }
-    .ai-confidence {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-    .ai-status {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-    }
-    .ai-btn {
-      padding: 12px 24px;
-      min-width: 140px;
-    }
-    .confidence-bar {
-      width: 200px;
-      height: 8px;
-      background: var(--stat-bg);
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 8px auto;
-    }
-    .confidence-fill {
-      height: 100%;
-      background: linear-gradient(135deg, #6d5efc, #3bc2ff);
-      border-radius: 4px;
-      transition: width 0.2s ease;
-    }
-
     /* AdSense Styles - 콘텐츠보다 눈에 띄지 않게 */
     .ad-container {
       width: 100%;
@@ -636,7 +543,6 @@
       <a href="#" class="site-logo" aria-label="PyEdu Games 홈">PyEdu Games</a>
       <nav class="site-nav" role="navigation" aria-label="주요 메뉴">
         <a href="#game">게임</a>
-        <a href="#ai">AI 인식</a>
         <a href="#about">소개</a>
         <a href="#contact">문의</a>
       </nav>
@@ -747,53 +653,25 @@
     </div>
 
     <div class="arena" id="arena">
-      <div class="arena-tabs">
-        <button class="arena-tab active" data-tab="game">🎮 게임</button>
-        <button class="arena-tab" data-tab="ai">🤖 AI 인식</button>
+      <div class="arenaHeader">
+        <div class="tag">🎯 뜨면 바로 눌러!</div>
+        <div class="tag">⏱️ 30초 스피드런</div>
       </div>
-
-      <!-- 게임 탭 -->
-      <div class="arena-content active" id="gameTab">
-        <div class="arenaHeader">
-          <div class="tag">🎯 뜨면 바로 눌러!</div>
-          <div class="tag">⏱️ 30초 스피드런</div>
-        </div>
-        <div class="missFlash" id="missFlash"></div>
-        <div class="toast" id="toast"></div>
-      </div>
-
-      <!-- AI 인식 탭 -->
-      <div class="arena-content" id="aiTab">
-        <div class="ai-container">
-          <div class="ai-status" id="aiStatus">카메라를 시작하세요</div>
-          <div class="ai-webcam-wrap" id="webcamWrap"></div>
-          <div class="ai-result" id="aiResult"></div>
-          <div class="ai-confidence" id="aiConfidence">
-            <div class="confidence-bar">
-              <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
-            </div>
-            <span id="confidenceText"></span>
-          </div>
-          <button class="ai-btn" id="aiBtn">카메라 시작</button>
-        </div>
-      </div>
+      <div class="missFlash" id="missFlash"></div>
+      <div class="toast" id="toast"></div>
     </div>
   </div>
 
     <!-- 소개 섹션 -->
     <section class="content-section" id="about">
       <h2>사이트 소개</h2>
-      <p>PyEdu Games는 재미있고 교육적인 웹 게임과 AI 기술을 활용한 인터랙티브 콘텐츠를 제공합니다.
-      반응속도 테스트 게임으로 집중력과 순발력을 키우고, Google Teachable Machine을 활용한 AI 이미지 인식 기능을 체험해보세요.</p>
+      <p>PyEdu Games는 재미있고 교육적인 웹 게임을 제공합니다.
+      반응속도 테스트 게임으로 집중력과 순발력을 키워보세요.</p>
 
       <div class="feature-grid">
         <article class="feature-card">
           <h3>🎯 반응속도 게임</h3>
           <p>30초 동안 랜덤하게 나타나는 타깃을 클릭하세요. 빠르게 클릭할수록 높은 점수를 획득합니다.</p>
-        </article>
-        <article class="feature-card">
-          <h3>🤖 AI 이미지 인식</h3>
-          <p>웹캠을 통해 실시간으로 물체를 인식합니다. 귤과 컵을 구분하는 AI 모델을 직접 체험해보세요.</p>
         </article>
         <article class="feature-card">
           <h3>📱 모바일 지원</h3>
@@ -802,6 +680,10 @@
         <article class="feature-card">
           <h3>🌙 다크/라이트 모드</h3>
           <p>눈의 피로를 줄이는 다크 모드와 밝은 환경에 적합한 라이트 모드를 지원합니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>🏆 최고 점수 기록</h3>
+          <p>최고 점수가 자동 저장되어 언제든지 자신의 기록에 도전할 수 있습니다.</p>
         </article>
       </div>
     </section>
@@ -831,7 +713,6 @@
           <h4>바로가기</h4>
           <div class="footer-links">
             <a href="#game">반응속도 게임</a>
-            <a href="#ai">AI 이미지 인식</a>
             <a href="#about">사이트 소개</a>
           </div>
         </div>
@@ -851,14 +732,10 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 PyEdu Games. All rights reserved. | Powered by Google Teachable Machine</p>
+        <p>&copy; 2025 PyEdu Games. All rights reserved.</p>
       </div>
     </div>
   </footer>
-
-  <!-- Teachable Machine Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
 <script>
   const arena = document.getElementById("arena");
@@ -903,9 +780,9 @@
     clearTimeout(targetTimeout);
     removeTarget();
 
-    const rect = document.getElementById("gameTab").getBoundingClientRect();
+    const rect = arena.getBoundingClientRect();
     const size = 64;
-    const pad = 16 + 10; // header area safety
+    const pad = 50; // header area safety
     const x = Math.random() * (rect.width - size - pad*2) + pad;
     const y = Math.random() * (rect.height - size - pad*2) + pad;
 
@@ -939,7 +816,7 @@
       scheduleSpawn();
     });
 
-    document.getElementById("gameTab").appendChild(targetEl);
+    arena.appendChild(targetEl);
 
     spawnAt = performance.now();
 
@@ -1108,130 +985,6 @@
     submitBtn.textContent = "문의하기";
   });
 
-  // Arena Tab Switching
-  const arenaTabs = document.querySelectorAll(".arena-tab");
-  const arenaContents = document.querySelectorAll(".arena-content");
-  const gameTab = document.getElementById("gameTab");
-
-  arenaTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      const targetTab = tab.dataset.tab;
-
-      arenaTabs.forEach(t => t.classList.remove("active"));
-      arenaContents.forEach(c => c.classList.remove("active"));
-
-      tab.classList.add("active");
-      document.getElementById(targetTab + "Tab").classList.add("active");
-    });
-  });
-
-  // AI Recognition with Teachable Machine
-  const MODEL_URL = "https://teachablemachine.withgoogle.com/models/nhyWE-u6u/";
-
-  const aiStatus = document.getElementById("aiStatus");
-  const aiResult = document.getElementById("aiResult");
-  const aiBtn = document.getElementById("aiBtn");
-  const webcamWrap = document.getElementById("webcamWrap");
-  const confidenceFill = document.getElementById("confidenceFill");
-  const confidenceText = document.getElementById("confidenceText");
-
-  let model, webcam, maxPredictions;
-  let aiRunning = false;
-
-  async function initAI() {
-    aiBtn.disabled = true;
-    aiBtn.textContent = "로딩 중...";
-    aiStatus.textContent = "모델을 불러오는 중...";
-
-    try {
-      const modelURL = MODEL_URL + "model.json";
-      const metadataURL = MODEL_URL + "metadata.json";
-
-      model = await tmImage.load(modelURL, metadataURL);
-      maxPredictions = model.getTotalClasses();
-
-      aiStatus.textContent = "카메라를 시작하는 중...";
-
-      const flip = true;
-      webcam = new tmImage.Webcam(224, 224, flip);
-      await webcam.setup();
-      await webcam.play();
-
-      webcamWrap.innerHTML = "";
-      webcamWrap.appendChild(webcam.canvas);
-
-      aiRunning = true;
-      aiBtn.textContent = "카메라 중지";
-      aiBtn.disabled = false;
-      aiStatus.textContent = "인식 중...";
-
-      window.requestAnimationFrame(loop);
-    } catch (error) {
-      console.error("AI 초기화 오류:", error);
-      aiStatus.textContent = "카메라 접근 오류. 권한을 확인하세요.";
-      aiBtn.textContent = "다시 시도";
-      aiBtn.disabled = false;
-    }
-  }
-
-  async function loop() {
-    if (!aiRunning) return;
-    webcam.update();
-    await predict();
-    window.requestAnimationFrame(loop);
-  }
-
-  async function predict() {
-    const predictions = await model.predict(webcam.canvas);
-
-    let topPrediction = predictions[0];
-    for (let i = 1; i < maxPredictions; i++) {
-      if (predictions[i].probability > topPrediction.probability) {
-        topPrediction = predictions[i];
-      }
-    }
-
-    const className = topPrediction.className;
-    const confidence = topPrediction.probability;
-    const confidencePercent = Math.round(confidence * 100);
-
-    // 귤이면 "귤님", 컵이면 "컵님"
-    if (confidence > 0.7) {
-      if (className === "귤") {
-        aiResult.textContent = "🍊 귤님!";
-      } else if (className === "컵") {
-        aiResult.textContent = "☕ 컵님!";
-      } else {
-        aiResult.textContent = `${className}님!`;
-      }
-    } else {
-      aiResult.textContent = "🤔 잘 모르겠어요...";
-    }
-
-    confidenceFill.style.width = confidencePercent + "%";
-    confidenceText.textContent = `신뢰도: ${confidencePercent}%`;
-  }
-
-  function stopAI() {
-    aiRunning = false;
-    if (webcam) {
-      webcam.stop();
-    }
-    webcamWrap.innerHTML = "";
-    aiResult.textContent = "";
-    confidenceFill.style.width = "0%";
-    confidenceText.textContent = "";
-    aiStatus.textContent = "카메라를 시작하세요";
-    aiBtn.textContent = "카메라 시작";
-  }
-
-  aiBtn.addEventListener("click", () => {
-    if (aiRunning) {
-      stopAI();
-    } else {
-      initAI();
-    }
-  });
 </script>
 </body>
 </html>
